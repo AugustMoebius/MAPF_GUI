@@ -1,14 +1,13 @@
 import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -19,20 +18,22 @@ import java.util.Map;
 public class MapfMain extends Application {
 
     private Stage primaryStage;
-    private StackPane root;
+    private BorderPane root;
     double width = 800;
     double height = 600;
 
     int cellSize = 30;
 
     private File levelFile;
+    private LevelDetails level;
     private File solutionFile;
+    private Solution solution;
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         try {
-            StackPane root = new StackPane();
+            BorderPane root = new BorderPane();
             this.root = root;
             root.getChildren().add(createMenuBar());
             // create scene and stage
@@ -48,20 +49,32 @@ public class MapfMain extends Application {
 
     private void drawGrid() {
         LevelDetails level = new LevelDetails(levelFile);
-        Grid grid = new Grid(level.MAX_COLS, level.MAX_ROWS, level.MAX_COLS * cellSize, level.MAX_ROWS * cellSize, level);
+        this.level = level;
+        int lvl_height = level.MAX_ROWS * cellSize;
+        int lvl_width = level.MAX_COLS * cellSize;
+
+        Grid grid = new Grid(level.MAX_COLS, level.MAX_ROWS, lvl_width, lvl_height, level);
         for (int row = 0; row < level.MAX_ROWS; row++) {
             for (int column = 0; column < level.MAX_COLS; column++) {
                 char c = level.initialLines.get(row).charAt(column);
+                Point point = new Point(column, row);
                 Cell cell;
                 if (c == '+'){
-                    cell = new Cell(column, row, "cell-wall");
+                    cell = new Cell(column, row, cellSize, "cell-wall");
+                } else if (level.goalPos.containsKey(point)) {
+                    cell = new Cell(column, row, cellSize,ColorResources.getGoalCellStyle(level.goalPos.get(point)));
                 } else {
-                    cell = new Cell(column, row, "cell");
+                    cell = new Cell(column, row, cellSize,"cell");
                 }
                 grid.add(cell, column, row);
             }
         }
-        root.getChildren().add(grid);
+
+        for(Map.Entry<Character, Point> entry : level.agentPos.entrySet()){
+            grid.addAgent(entry.getKey(), grid.getCell(entry.getValue()));
+        }
+
+         root.setCenter(grid);
     }
 
     private MenuBar createMenuBar() {
@@ -80,10 +93,15 @@ public class MapfMain extends Application {
 
         item1.setOnAction(actionEvent -> {
             levelFile = fileChooser1.showOpenDialog(primaryStage);
+            this.solution = new Solution(solutionFile, level.agentPos.keySet());
             drawGrid();
         });
 
-        item2.setOnAction(actionEvent -> solutionFile = fileChooser2.showOpenDialog(primaryStage));
+        item2.setOnAction(actionEvent -> {
+            solutionFile = fileChooser2.showOpenDialog(primaryStage);
+            this.solution = new Solution(solutionFile, level.agentPos.keySet());
+        });
+
 
         menu.getItems().addAll(item1, item2);
         menuBar.getMenus().add(menu);

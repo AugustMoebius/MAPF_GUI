@@ -1,11 +1,8 @@
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Grid extends Pane {
 
@@ -15,7 +12,8 @@ public class Grid extends Pane {
     double width;
     double height;
 
-    Cell[][] cells;
+    private Cell[][] cells;
+    private HashMap<Cell, Circle> agentMap = new HashMap();
 
     public Grid(int columns, int rows, double width, double height, LevelDetails level) {
 
@@ -23,7 +21,6 @@ public class Grid extends Pane {
         this.rows = rows;
         this.width = width;
         this.height = height;
-
         cells = new Cell[rows][columns];
 
     }
@@ -48,18 +45,23 @@ public class Grid extends Pane {
     }
 
 
-//    public void addAgent(Point point, Character agent, String style){
-//        Circle circle = new Circle();
-//        double r = (height / rows) - 5;
-//        double x =  width * point.getX();
-//        double y =  height * point.getY();
-//
-//        circle.setLayoutX(x);
-//        circle.setLayoutY(y);
-//        circle.setRadius(r);
-//        circle.setFill(javafx.scene.paint.Color.RED);
-//        agentMap.put(agent, circle);
-//        getChildren().add(circle);
-//    }
+    public void addAgent(Character agent, Cell cell){
+        Circle circle = new Circle();
+        double r = ((height / rows) / 2) - 2;
+        Point center = cell.getCenter();
+        double x = center.getX();
+        double y = center.getY();
+
+        circle.setLayoutX(x);
+        circle.setLayoutY(y);
+        circle.setRadius(r);
+        circle.setFill(ColorResources.getAgentColor(agent));
+        agentMap.put(cell, circle);
+        getChildren().add(circle);
+    }
+
+    public Cell getCell(Point point){
+        return cells[(int)point.getX()][(int)point.getY()];
+    }
 
 }

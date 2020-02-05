@@ -1,3 +1,5 @@
+import javafx.scene.paint.Color;
+
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,9 +12,10 @@ public class LevelDetails {
     List<String> initialLines = new ArrayList();
     private List<String> goalLines = new ArrayList();
     Map<Character, Point> agentPos = new HashMap<>();
-    Map<Character, Point> goalPos = new HashMap<>();
+    Map<Point, Character> goalPos = new HashMap<>();
     final int MAX_ROWS;
     final int MAX_COLS;
+
 
 
     public LevelDetails(File levelFile) {
@@ -70,7 +73,7 @@ public class LevelDetails {
                     agentPos.put(cInit, new Point(col, row));
                 }
                 if (mGoal.find()) {
-                    agentPos.put(cGoal, new Point(col, row));
+                    goalPos.put(new Point(col, row), cGoal);
                 }
 
             }
