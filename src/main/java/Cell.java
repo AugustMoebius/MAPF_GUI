@@ -4,9 +4,9 @@ import java.awt.*;
 
 public class Cell extends StackPane {
 
-    int column;
-    int row;
-    int size;
+    private int column;
+    private int row;
+    private int size;
 
     public Cell(int column, int row, int size, String style) {
 

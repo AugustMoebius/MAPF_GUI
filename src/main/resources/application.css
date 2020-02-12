@@ -20,7 +20,11 @@
     -fx-border-width: 1px;
 }
 
-
+.cell-goal-completed {
+    -fx-background-color: chartreuse;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
 .test {
     -fx-background-color: red;
 }

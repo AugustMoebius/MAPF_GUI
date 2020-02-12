@@ -6,21 +6,25 @@ import java.util.HashMap;
 
 public class Grid extends Pane {
 
+    private LevelDetails level;
     int rows;
     int columns;
 
     double width;
     double height;
 
+    int cellSize;
+
     private Cell[][] cells;
-    private HashMap<Cell, Circle> agentMap = new HashMap();
+    HashMap<Character, Circle> agentMap = new HashMap();
 
-    public Grid(int columns, int rows, double width, double height, LevelDetails level) {
-
+    public Grid(int columns, int rows, int cellSize, LevelDetails level) {
+        this.cellSize = cellSize;
         this.columns = columns;
         this.rows = rows;
-        this.width = width;
-        this.height = height;
+        this.width = cellSize * columns;
+        this.height = cellSize * rows;
+        this.level = level;
         cells = new Cell[rows][columns];
 
     }
@@ -56,12 +60,31 @@ public class Grid extends Pane {
         circle.setLayoutY(y);
         circle.setRadius(r);
         circle.setFill(ColorResources.getAgentColor(agent));
-        agentMap.put(cell, circle);
+        //agentMap.put(cell, circle);
+        agentMap.put(agent, circle);
         getChildren().add(circle);
     }
 
     public Cell getCell(Point point){
-        return cells[(int)point.getX()][(int)point.getY()];
+        return cells[point.y][point.x];
+    }
+
+    public void updateCellStyles(Character agent, Point point){
+        level.agentPos.put(agent, point);
+        //Check if goal position - Will most likely fail if an egent
+        if (level.agentInGoal(agent)) {
+            cells[point.y][point.x].getStyleClass().clear();
+            cells[point.y][point.x].getStyleClass().add("cell-goal-completed");
+        } else {
+            point = level.goalPosByAgent.get(agent);
+            cells[point.y][point.x].getStyleClass().clear();
+            cells[point.y][point.x].getStyleClass().add(ColorResources.getGoalCellStyle(agent));
+        }
+    }
+
+    public Point getAgentPixelPos(Point point){
+        Cell cell = cells[point.y][point.x];
+        return cell.getCenter();
     }
 
 }
