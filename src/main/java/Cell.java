@@ -13,13 +13,12 @@ public class Cell extends StackPane {
         this.column = column;
         this.row = row;
         this.size = size;
-        //setOpacity(0.6);
         getStyleClass().add(style);
     }
 
     public Point getCenter(){
-        int x = size / 2 + column * size;
-        int y = size / 2 + row * size;
+        int x = column * size + 2;
+        int y = row * size + 2;
         return new Point(x,y);
     }
 

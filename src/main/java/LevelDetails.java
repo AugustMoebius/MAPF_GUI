@@ -63,18 +63,19 @@ public class LevelDetails {
     private void setPositions() {
         Pattern p = Pattern.compile("[a-zA-Z]");
         for (int row = 0; row < initialLines.size(); row++) {
-            for (int col = 0; col < initialLines.size(); col++) {
+            for (int col = 0; col < initialLines.get(row).length(); col++) {
                 char cInit = initialLines.get(row).charAt(col);
                 char cGoal = goalLines.get(row).charAt(col);
                 Matcher mInit = p.matcher(String.valueOf(cInit));
                 Matcher mGoal = p.matcher(String.valueOf(cGoal));
-                Point newPoint = new Point(col, row);
+                Point newPoint1 = new Point(col, row);
                 if (mInit.find()) {
-                    agentPos.put(cInit, newPoint);
+                    agentPos.put(cInit, newPoint1);
                 }
+                Point newPoint2 = new Point(col, row);
                 if (mGoal.find()) {
-                    goalPosByPoint.put(newPoint, cGoal);
-                    goalPosByAgent.put(cGoal, newPoint);
+                    goalPosByPoint.put(newPoint2, cGoal);
+                    goalPosByAgent.put(cGoal, newPoint2);
                 }
 
             }
@@ -83,6 +84,6 @@ public class LevelDetails {
 
     public boolean agentInGoal(Character agent) {
         Point point = agentPos.get(agent);
-        return goalPosByPoint.containsKey(point) && goalPosByPoint.get(point).equals(agent);
+        return goalPosByAgent.get(agent).equals(point);
     }
 }

@@ -16,7 +16,7 @@ public class Grid extends Pane {
     int cellSize;
 
     private Cell[][] cells;
-    HashMap<Character, Circle> agentMap = new HashMap();
+    HashMap<Character, AgentCircle> agentMap = new HashMap();
 
     public Grid(int columns, int rows, int cellSize, LevelDetails level) {
         this.cellSize = cellSize;
@@ -50,19 +50,15 @@ public class Grid extends Pane {
 
 
     public void addAgent(Character agent, Cell cell){
-        Circle circle = new Circle();
         double r = ((height / rows) / 2) - 2;
         Point center = cell.getCenter();
         double x = center.getX();
         double y = center.getY();
-
-        circle.setLayoutX(x);
-        circle.setLayoutY(y);
-        circle.setRadius(r);
-        circle.setFill(ColorResources.getAgentColor(agent));
-        //agentMap.put(cell, circle);
-        agentMap.put(agent, circle);
-        getChildren().add(circle);
+        AgentCircle agentCircle = new AgentCircle(r, agent);
+        agentMap.put(agent, agentCircle);
+        agentCircle.setLayoutX(x);
+        agentCircle.setLayoutY(y);
+        getChildren().add(agentCircle);
     }
 
     public Cell getCell(Point point){

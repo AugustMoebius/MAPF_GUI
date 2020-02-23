@@ -70,7 +70,7 @@ public class MapfMain extends Application {
                 if (c == '+'){
                     cell = new Cell(column, row, cellSize, "cell-wall");
                 } else if (level.goalPosByPoint.containsKey(point)) {
-                    cell = new Cell(column, row, cellSize,ColorResources.getGoalCellStyle(level.goalPosByPoint.get(point)));
+                    cell = new Cell(column, row, cellSize, ColorResources.getGoalCellStyle(level.goalPosByPoint.get(point)));
                 } else {
                     cell = new Cell(column, row, cellSize,"cell");
                 }
@@ -91,7 +91,7 @@ public class MapfMain extends Application {
 
         Menu menu = new Menu("File");
         MenuItem item1 = new MenuItem("Load level file");
-        MenuItem item2 = new MenuItem("Load solByPoint file");
+        MenuItem item2 = new MenuItem("Load solution file");
         final FileChooser fileChooser1 = new FileChooser();
         fileChooser1.setInitialDirectory(new File("/Users/augustmobius/Library/Mobile Documents/com~apple~CloudDocs/DTU filer/Speciale"));
         fileChooser1.getExtensionFilters().add(new FileChooser.ExtensionFilter("Level Files", "*.lvl"));
@@ -133,7 +133,7 @@ public class MapfMain extends Application {
                 Point curPos = sol.get(agent).get(i);
                 Point pixelPos = grid.getAgentPixelPos(curPos);
                 Timeline timeline = new Timeline();
-                Circle circle = grid.agentMap.get(agent);
+                AgentCircle circle = grid.agentMap.get(agent);
                 KeyValue kvX = new KeyValue(circle.layoutXProperty(), pixelPos.x);
                 KeyValue kvY = new KeyValue(circle.layoutYProperty(), pixelPos.y);
                 KeyFrame keyFrame = new KeyFrame(Duration.millis(animationSpeed), kvX, kvY);
