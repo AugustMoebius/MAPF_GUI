@@ -9,6 +9,12 @@
     -fx-border-width: 1px;
 }
 
+.cell-hole {
+    -fx-background-color: black;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
 .cell-goal-A {
     -fx-background-color: red;
     -fx-border-color: black;
@@ -49,6 +55,111 @@
     -fx-border-color: black;
     -fx-border-width: 1px;
 }
+
+.cell-goal-I {
+    -fx-background-color: gold;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-J {
+    -fx-background-color: lime;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-K {
+    -fx-background-color: teal;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-L {
+    -fx-background-color: lightblue;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-M {
+    -fx-background-color: deeppink;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-N {
+    -fx-background-color: linen;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-O {
+    -fx-background-color: silver;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-P {
+    -fx-background-color: honeydew;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-Q {
+    -fx-background-color: tan;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-R {
+    -fx-background-color: peru;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-S {
+    -fx-background-color: lavender;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-T {
+    -fx-background-color: slateblue;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-U {
+    -fx-background-color: navy;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-V {
+    -fx-background-color: darkgreen;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-X {
+    -fx-background-color: darkred;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-Y {
+    -fx-background-color: salmon;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.cell-goal-Z {
+    -fx-background-color: blueviolet;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+
+
 
 .cell-goal-completed {
     -fx-background-color: chartreuse;

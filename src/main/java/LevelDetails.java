@@ -1,66 +1,65 @@
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LevelDetails {
     List<String> initialLines = new ArrayList();
-    private List<String> goalLines = new ArrayList();
-    Map<Character, Point> agentPos = new HashMap<>();
-    Map<Point, Character> goalPosByPoint = new HashMap<>();
-    Map<Character, Point> goalPosByAgent = new HashMap<>();
-    final int MAX_ROWS;
-    final int MAX_COLS;
+    Map<Integer, Point> agentPos = new HashMap<>();
+    Map<Point, Integer> goalPosByPoint = new HashMap<>();
+    Map<Integer, Point> goalPosByAgent = new HashMap<>();
+    int MAX_ROWS;
+    int MAX_COLS;
 
 
 
-    public LevelDetails(File levelFile) {
+    public LevelDetails(File levelFile, File agentFile) {
         try {
-            processLevelFile(levelFile);
-        } catch (FileNotFoundException e) {
+            processLevelFile(levelFile, agentFile);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        this.MAX_ROWS = initialLines.size();
-        // Finds length of longest string
-        this.MAX_COLS = initialLines.stream().map(String::length).max(Integer::compareTo).get();
     }
 
-    private void processLevelFile(File levelFile) throws FileNotFoundException {
-        boolean readingInitial = false;
-        boolean readingGoals = false;
 
-        Scanner scanner = new Scanner(levelFile);
-        String line = scanner.nextLine();
 
-        while(!line.equals("#end")) {
-            switch (line) {
-                case "#initial":
-                    readingInitial = true;
-                    line = scanner.nextLine();
-                    break;
-                case "#goal":
-                    readingGoals = true;
-                    readingInitial = false;
-                    line = scanner.nextLine();
-                    break;
-            }
+    private void processLevelFile(File levelFile, File agentFile) throws IOException {
+        List<String> levelLines = Files.lines(Paths.get(levelFile.getPath())).collect(Collectors.toList());
+        List<String> agentLines = Files.lines(Paths.get(agentFile.getPath())).collect(Collectors.toList());
 
-            if (readingInitial) {
-                initialLines.add(line);
-            }
-            if (readingGoals) {
-                goalLines.add(line);
-            }
+        MAX_ROWS = Integer.parseInt(levelLines.get(1).split(" ")[1]);
+        MAX_COLS = Integer.parseInt(levelLines.get(2).split(" ")[1]);
 
-            line = scanner.nextLine();
+        // Remove first 4 lines
+        levelLines = levelLines.subList(4, levelLines.size());
+        this.initialLines = levelLines;
+        int agentID = 0;
+        for(String row : agentLines.subList(1, agentLines.size())) {
+            String[] split = row.split("\t");
+            int startCol = Integer.parseInt(split[4]);
+            int startRow = Integer.parseInt(split[5]);
+            int goalCol = Integer.parseInt(split[6]);
+            int goalRow = Integer.parseInt(split[7]);
+            Point init = new Point(startCol, startRow);
+            Point goal = new Point(goalCol, goalRow);
+            agentPos.put(agentID, init);
+            goalPosByAgent.put(agentID, goal);
+            goalPosByPoint.put(goal, agentID);
+            agentID++;
         }
-        setPositions();
     }
 
-    private void setPositions() {
+
+ /*   private void setPositions() {
         Pattern p = Pattern.compile("[a-zA-Z]");
         for (int row = 0; row < initialLines.size(); row++) {
             for (int col = 0; col < initialLines.get(row).length(); col++) {
@@ -80,9 +79,9 @@ public class LevelDetails {
 
             }
         }
-    }
+    }*/
 
-    public boolean agentInGoal(Character agent) {
+    public boolean agentInGoal(Integer agent) {
         Point point = agentPos.get(agent);
         return goalPosByAgent.get(agent).equals(point);
     }

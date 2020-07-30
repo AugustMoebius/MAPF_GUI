@@ -1,3 +1,7 @@
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
@@ -16,7 +20,7 @@ public class Grid extends Pane {
     int cellSize;
 
     private Cell[][] cells;
-    HashMap<Character, AgentCircle> agentMap = new HashMap();
+    HashMap<Integer, AgentCircle> agentMap = new HashMap();
 
     public Grid(int columns, int rows, int cellSize, LevelDetails level) {
         this.cellSize = cellSize;
@@ -49,8 +53,8 @@ public class Grid extends Pane {
     }
 
 
-    public void addAgent(Character agent, Cell cell){
-        double r = ((height / rows) / 2) - 2;
+    public void addAgent(Integer agent, Cell cell){
+        double r = ((height / rows) / 2 - 1);
         Point center = cell.getCenter();
         double x = center.getX();
         double y = center.getY();
@@ -65,7 +69,7 @@ public class Grid extends Pane {
         return cells[point.y][point.x];
     }
 
-    public void updateCellStyles(Character agent, Point point){
+    public void updateCellStyles(Integer agent, Point point){
         level.agentPos.put(agent, point);
         //Check if goal position - Will most likely fail if an egent
         if (level.agentInGoal(agent)) {
@@ -74,7 +78,7 @@ public class Grid extends Pane {
         } else {
             point = level.goalPosByAgent.get(agent);
             cells[point.y][point.x].getStyleClass().clear();
-            cells[point.y][point.x].getStyleClass().add(ColorResources.getGoalCellStyle(agent));
+            cells[point.y][point.x].setBackground(new Background(new BackgroundFill(ColorResources.getColor(agent), CornerRadii.EMPTY, Insets.EMPTY)));
         }
     }
 

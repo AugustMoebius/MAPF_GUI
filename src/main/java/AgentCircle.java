@@ -9,21 +9,20 @@ public class AgentCircle extends StackPane {
     Circle circle;
     Text label;
     double circlrR;
-    Character agentChar;
+    Integer agentID;
 
-    public AgentCircle(double circlrR, Character agentChar) {
+    public AgentCircle(double circlrR, Integer agentChar) {
         this.circlrR = circlrR;
-        this.agentChar = agentChar;
+        this.agentID = agentChar;
         this.circle = new Circle();
         circle.setRadius(circlrR);
-        circle.setFill(ColorResources.getAgentColor(agentChar));
-
-        this.label = new Text(String.valueOf(agentChar));
+        circle.setFill(ColorResources.getColor(agentID));
+        /*this.label = new Text(String.valueOf(agentChar));
         label.setBoundsType(TextBoundsType.VISUAL);
         label.setStyle(
                 "-fx-font-family: \"Helvetica Neue\";" +
-                "-fx-font-size: 25px;"
-        );
-        getChildren().addAll(circle, label);
+                "-fx-font-size: 15px;"
+        );*/
+        getChildren().addAll(circle);
     }
 }
